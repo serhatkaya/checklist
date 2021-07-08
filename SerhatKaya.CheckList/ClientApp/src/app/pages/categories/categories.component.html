@@ -1,0 +1,65 @@
+<div *ngIf="categoryItems != undefined">
+  <main class="o-main">
+    <section class="o-categories-section">
+      <h2>Checklist Categories</h2>
+      <div class="row">
+        <div
+          *ngFor="let category of categoryItems"
+          class="col col--md-4 col--lg-3 u-display-flex u-margin-top-small"
+        >
+          <div
+            class="c-card {{
+              category.theme
+            }} c-category-card u-flex-basis-100%"
+          >
+            <header class="c-card__header">
+              <h4 class="c-card__title c-category-card__title">
+                <a
+                  class="c-link-light c-card__title-link"
+                  [routerLink]=""
+                  (click)="router.navigate(['/category/' + category.id])"
+                  >{{ category.categoryName }}</a
+                >
+              </h4>
+            </header>
+            <div class="c-category-card__checklist-count">
+              {{ category.count }} Checklists
+            </div>
+            <p class="c-category-card__description">
+              {{ category.description }}
+            </p>
+            <footer class="c-card__footer">
+              <ul class="c-tag-list">
+                <li
+                  *ngFor="let tag of category.tagItems"
+                  class="c-tag-list__item c-category-card__tag"
+                >
+                  <a
+                    class="c-tag c-tag--theme-clementine c-tag--size-small"
+                    routerLink="/tags/{{ tag.tag.id }}"
+                  >
+                    #{{ tag.tag.tagName }}
+                  </a>
+                </li>
+              </ul>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </section>
+    <hr class="u-margin-ends-0 u-color-primary-900" />
+    <section class="o-suggested-checklists">
+      <h2 class="u-margin-bottom">Have you seen these checklists?</h2>
+      <div class="row">
+        <div class="col col--md-9 col--lg-6">
+          <blockquote class="c-blockquote">
+            We have developed a protocol for anyone to suggest a checklist. We
+            told you we have a protocol for almost everything!<!-- -->
+            <span role="img" aria-labelledby="rocket">🚀</span>
+          </blockquote>
+        </div>
+      </div>
+      <div class="row u-margin-top-medium"></div>
+    </section>
+  </main>
+</div>

@@ -1,0 +1,679 @@
+<div id="modal-content-wrapper">
+  <header id="modal-header">
+    <!-- Modal Header Content Here -->
+  </header>
+  <section id="modal-body">
+    <!-- MODAL BODY -->
+    <div class="d-flex justify-content-end">
+      <button (click)="closeModal()" class="btn btn-danger">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+    <div class="tab_container">
+      <input id="tab1" type="radio" name="tabs" checked />
+      <label for="tab1"
+        ><i class="fa fa-user-circle-o"></i><span>Categories</span></label
+      >
+
+      <input id="tab2" type="radio" name="tabs" />
+      <label for="tab2"
+        ><i class="fa fa-pencil-square-o"></i><span>CheckLists</span></label
+      >
+
+      <input id="tab3" type="radio" name="tabs" />
+      <label for="tab3"
+        ><i class="fa fa-user-circle-o"></i><span>Tags</span></label
+      >
+
+      <input id="tab4" type="radio" name="tabs" />
+      <label for="tab4"
+        ><i class="fa fa-user-circle-o"></i><span>Users</span></label
+      >
+
+      <input id="tab5" type="radio" name="tabs" />
+      <label for="tab5"
+        ><i class="fa fa-user-circle-o"></i><span>Logs</span></label
+      >
+
+      <section id="content1" class="tab-content">
+        <div class="row">
+          <div class="col-4">
+            <table class="table table-striped table-dark" cellpadding="10">
+              <thead>
+                <tr>
+                  <th>Category Name</th>
+                  <th>
+                    {{ categoryDeleteMode == 0 ? "Operation" : "Delete?" }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let cat of categories">
+                  <td>{{ cat.categoryName }}</td>
+                  <td>
+                    <div *ngIf="categoryDeleteMode == 0">
+                      <button
+                        class="btn btn-success"
+                        (click)="editCategory(cat)"
+                      >
+                        <i class="fa fa-edit"></i>
+                      </button>
+                      <button
+                        *ngIf="!categoryEditMode"
+                        class="btn btn-danger ml-2"
+                        (click)="categoryDeleteMode = cat.id"
+                      >
+                        <i class="fa fa-times"></i>
+                      </button>
+                    </div>
+                    <div *ngIf="categoryDeleteMode == cat.id">
+                      <button
+                        class="btn btn-success"
+                        (click)="deleteCategory(cat); categoryDeleteMode = 0"
+                      >
+                        <i class="fa fa-check"></i>
+                      </button>
+                      <button
+                        class="btn btn-danger ml-2"
+                        (click)="categoryDeleteMode = 0"
+                      >
+                        <i class="fa fa-times"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-8">
+            <p>{{ categoryEditMode ? "Edit category" : "New category" }}</p>
+            <hr />
+            <button
+              *ngIf="categoryEditMode"
+              class="btn btn-primary mr-2 mb-2"
+              (click)="clearCategoryModel()"
+            >
+              Switch to create mode
+            </button>
+            <form>
+              <div class="form-group row">
+                <label for="catName" class="col-4 col-form-label"
+                  >Category Name</label
+                >
+                <div class="col-8">
+                  <input
+                    id="catName"
+                    [(ngModel)]="categoryModel.categoryName"
+                    [ngModelOptions]="{ standalone: true }"
+                    name="catName"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="catDesc" class="col-4 col-form-label"
+                  >Category Description</label
+                >
+                <div class="col-8">
+                  <textarea
+                    id="catDesc"
+                    style="height: 100px"
+                    [(ngModel)]="categoryModel.description"
+                    [ngModelOptions]="{ standalone: true }"
+                    name="catDesc"
+                    type="text"
+                    class="form-control"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="selectvd" class="col-4 col-form-label"
+                  >Category Theme</label
+                >
+                <div class="col-8">
+                  <select
+                    id="selectvd"
+                    name="selectvd"
+                    class="custom-select"
+                    [(ngModel)]="categoryModel.theme"
+                  >
+                    <option
+                      *ngFor="let theme of themes"
+                      [value]="theme"
+                      [selected]="categoryModel.theme == theme"
+                    >
+                      {{ theme }}
+                    </option>
+                  </select>
+                  <span>Preview</span>
+                  <div
+                    class="mt-2 c-card {{ categoryModel.theme }}"
+                    style="height: 30px; width: 60px"
+                  ></div>
+                </div>
+              </div>
+              <div class="form-group row" *ngIf="tags != undefined">
+                <label for="select" class="col-4 col-form-label">Tags</label>
+                <div style="overflow: auto; height: 200px">
+                  <mat-selection-list
+                    #list
+                    [(ngModel)]="assignedTagsModel"
+                    [ngModelOptions]="{ standalone: true }"
+                    (ngModelChange)="onChangeCategoryTagList($event)"
+                  >
+                    <mat-list-option
+                      *ngFor="let tag of tags"
+                      [value]="tag.id"
+                      [selected]="checkIfAssigned(tag.id)"
+                    >
+                      {{ tag.tagName }}
+                    </mat-list-option>
+                  </mat-selection-list>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="offset-4 col-8">
+                  <button
+                    name="submit"
+                    type="button"
+                    (click)="
+                      categoryEditMode ? sendEditCategory() : newCategory()
+                    "
+                    class="btn btn-primary"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="content2" class="tab-content">
+        <div class="row">
+          <div class="col-4">
+            <table class="table table-striped table-dark" cellpadding="10">
+              <thead>
+                <tr>
+                  <th>Checklist Name</th>
+                  <th>
+                    {{ checkListDeleteMode != 0 ? "Delete?" : "Operation" }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let list of checkLists">
+                  <td>{{ list.header }}</td>
+                  <td>
+                    <div *ngIf="checkListDeleteMode == 0">
+                      <button
+                        class="btn btn-success"
+                        (click)="editCheckList(list)"
+                      >
+                        <i class="fa fa-edit"></i>
+                      </button>
+                      <button
+                        *ngIf="!checklistEditMode"
+                        class="btn btn-danger ml-2"
+                        (click)="checkListDeleteMode = list.id"
+                        data-toggle="modal"
+                        data-target="#confirmChecklistRemove"
+                      >
+                        <i class="fa fa-trash-alt"></i>
+                      </button>
+                    </div>
+                    <div *ngIf="checkListDeleteMode == list.id">
+                      <button
+                        class="btn btn-success"
+                        (click)="deleteCheckList(list)"
+                      >
+                        <i class="fa fa-check"></i>
+                      </button>
+                      <button
+                        class="btn btn-danger ml-2"
+                        (click)="checkListDeleteMode = 0"
+                        data-toggle="modal"
+                        data-target="#confirmChecklistRemove"
+                      >
+                        <i class="fa fa-times"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-8">
+            <p>{{ checklistEditMode ? "Edit checklist" : "New Checklist" }}</p>
+            <button
+              *ngIf="checklistEditMode"
+              class="btn btn-primary mr-2 mb-2"
+              (click)="clearCheckListModel()"
+            >
+              Switch to create mode
+            </button>
+            <hr />
+            <form>
+              <div class="form-group row">
+                <label for="clHeader" class="col-4 col-form-label"
+                  >Checklist Header</label
+                >
+                <div class="col-8">
+                  <input
+                    id="clHeader"
+                    [(ngModel)]="checklistModel.header"
+                    name="clHeader"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="text1" class="col-4 col-form-label"
+                  >Checklist Description</label
+                >
+                <div class="col-8">
+                  <textarea
+                    style="height: 150px"
+                    id="text1"
+                    [(ngModel)]="checklistModel.description"
+                    name="text1"
+                    type="text"
+                    class="form-control"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="select" class="col-4 col-form-label"
+                  >Checklist Theme</label
+                >
+                <div class="col-8">
+                  <select
+                    id="select"
+                    name="select"
+                    class="custom-select"
+                    [(ngModel)]="checklistModel.theme"
+                  >
+                    <option
+                      *ngFor="let theme of themes"
+                      [value]="theme"
+                      [selected]="checklistModel.theme == theme"
+                    >
+                      {{ theme }}
+                    </option>
+                  </select>
+                  <span>Preview</span>
+                  <div
+                    class="mt-2 c-card {{ checklistModel.theme }}"
+                    style="height: 30px; width: 60px"
+                  ></div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="selectxd" class="col-4 col-form-label"
+                  >Category</label
+                >
+                <div class="col-8">
+                  <select
+                    id="selectxd"
+                    name="selectxd"
+                    class="custom-select"
+                    [(ngModel)]="checklistModel.categoryId"
+                  >
+                    <option [value]="undefined" selected disabled>
+                      Select a category
+                    </option>
+                    <option
+                      *ngFor="let category of categories"
+                      [value]="category.id"
+                    >
+                      {{ category.categoryName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                Checklist Items
+                <div class="col-8 d-flex justify-content-between">
+                  <input
+                    #itemHeader
+                    id="text1x1"
+                    [(ngModel)]="checkListItemModel.itemHeader"
+                    name="text1x1"
+                    type="text"
+                    placeholder="Item header"
+                  />
+                  <input
+                    #itemText
+                    id="text1x2"
+                    [(ngModel)]="checkListItemModel.itemText"
+                    name="text1x2"
+                    type="text"
+                    placeholder="Item text"
+                  />
+                  <button class="btn btn-success" (click)="addChecklistItem()">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-8">
+                  <table class="table table-striped table-dark">
+                    <thead>
+                      <tr>
+                        <th>Item Header</th>
+                        <th>Item Text</th>
+                        <th width="200px">Operations</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of checkListItems">
+                        <td>{{ item.itemHeader }}</td>
+                        <td>{{ item.itemText }}</td>
+                        <td>
+                          <button
+                            class="btn btn-danger"
+                            (click)="removeChecklistItem(item)"
+                          >
+                            <i class="fa fa-times"></i>
+                          </button>
+                          <!-- <button class="btn btn-info ml-1" (click)="checkListItemUp(item)"><i class="fa fa-arrow-up"></i></button>
+                        <button class="btn btn-info ml-1" (click)="checkListItemDown(item)"><i class="fa fa-arrow-down"></i></button> -->
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="offset-4 col-8">
+                  <button
+                    name="submit"
+                    type="button"
+                    (click)="
+                      checklistEditMode ? sendEditCheckList() : newCheckList()
+                    "
+                    class="btn btn-primary"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+      <section id="content3" class="tab-content">
+        <div class="row">
+          <div class="col-4">
+            <table class="table table-striped table-dark" cellpadding="10">
+              <thead>
+                <tr>
+                  <th>Checklist Name</th>
+                  <th>Operation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let tag of tags">
+                  <td>{{ tag.tagName }}</td>
+                  <td>
+                    <div *ngIf="tagDeleteMode == 0">
+                      <button class="btn btn-success" (click)="editTag(tag)">
+                        <i class="fa fa-edit"></i>
+                      </button>
+                      <button
+                        *ngIf="!tagEditMode"
+                        class="btn btn-danger ml-2"
+                        (click)="tagDeleteMode = tag.id"
+                      >
+                        <i class="fa fa-trash-alt"></i>
+                      </button>
+                    </div>
+                    <div *ngIf="tagDeleteMode == tag.id">
+                      <button class="btn btn-success" (click)="deleteTag(tag)">
+                        <i class="fa fa-check"></i>
+                      </button>
+                      <button
+                        *ngIf="!tagEditMode"
+                        class="btn btn-danger ml-2"
+                        (click)="tagDeleteMode = 0"
+                      >
+                        <i class="fa fa-times"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-8">
+            <p>{{ tagEditMode ? "Tag edit" : "New Tag" }}</p>
+            <button
+              *ngIf="tagEditMode"
+              class="btn btn-primary mr-2 mb-2"
+              (click)="
+                tagEditMode = false; tagModel.tagName = ''; tagModel.id = 0
+              "
+            >
+              Switch to create mode
+            </button>
+            <hr />
+            <form>
+              <div class="form-group row">
+                <label for="text1v4" class="col-4 col-form-label"
+                  >Tag name:
+                </label>
+                <div class="col-8">
+                  <input
+                    id="text1v4"
+                    [(ngModel)]="tagModel.tagName"
+                    name="text1v4"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="offset-4 col-8">
+                  <button
+                    name="submit"
+                    type="button"
+                    (click)="
+                      tagEditMode ? sendEditTag(this.tagModel) : newTag()
+                    "
+                    class="btn btn-primary"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+      <section id="content4" class="tab-content">
+        <div class="row">
+          <div class="col-5">
+            <table class="table table-striped table-dark">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>E-Mail</th>
+                  <th>Full Name</th>
+                  <th>{{ userDeleteMode == 0 ? "Operations" : "Delete?" }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of userList">
+                  <td>{{ user.id }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.userFullName }}</td>
+                  <td>
+                    <div *ngIf="userDeleteMode == 0">
+                      <button class="btn btn-success" (click)="editUser(user)">
+                        <i class="fa fa-edit"></i>
+                      </button>
+                      <button
+                        class="btn btn-danger ml-2"
+                        (click)="userDeleteMode = user.id"
+                      >
+                        <i class="fa fa-times"></i>
+                      </button>
+                    </div>
+                    <div *ngIf="userDeleteMode == user.id">
+                      <button
+                        class="btn btn-success"
+                        (click)="deleteUser(user)"
+                      >
+                        <i class="fa fa-check"></i>
+                      </button>
+                      <button
+                        class="btn btn-danger ml-2"
+                        (click)="userDeleteMode = 0"
+                      >
+                        <i class="fa fa-times"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-7">
+            <p>{{ userEditMode ? "Edit user" : "New user" }}</p>
+            <button
+              *ngIf="userEditMode"
+              class="btn btn-primary mr-2 mb-2"
+              (click)="userEditMode = false; userModel = {}"
+            >
+              Switch to create mode
+            </button>
+            <hr />
+            <form>
+              <div class="form-group row">
+                <label for="fullName" class="col-4 col-form-label"
+                  >Full name</label
+                >
+                <div class="col-8">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fa fa-address-card"></i>
+                      </div>
+                    </div>
+                    <input
+                      [(ngModel)]="userModel.userFullName"
+                      id="fullName"
+                      name="fullName"
+                      type="text"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="eMail" class="col-4 col-form-label">Email</label>
+                <div class="col-8">
+                  <input
+                    id="eMail"
+                    [(ngModel)]="userModel.email"
+                    name="eMail"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="newPassword" class="col-4 col-form-label">{{
+                  userEditMode ? "New Password" : "Password"
+                }}</label>
+                <div class="col-8">
+                  <input
+                    id="newPassword"
+                    [(ngModel)]="
+                      userEditMode ? userModel.newPassword : userModel.password
+                    "
+                    name="newPassword"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="selectv" class="col-4 col-form-label">Role</label>
+                <div class="col-8">
+                  <select
+                    id="selectv"
+                    name="selectv"
+                    class="custom-select"
+                    [(ngModel)]="userModel.role"
+                  >
+                    <option value="User">User</option>
+                    <option value="Admin">Admin</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="offset-4 col-8">
+                  <button
+                    name="submit"
+                    type="submit"
+                    (click)="userEditMode ? sendEditUser() : addUser()"
+                    class="btn btn-primary"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="content5" class="tab-content">
+        <div class="row">
+          <div class="col-12">
+            <table class="table table-striped table-dark">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>User Email</th>
+                  <th>User Full Name</th>
+                  <th>Date</th>
+                  <th>Checklist Id</th>
+                  <th>Checklist Header</th>
+                  <th>Operation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let log of logs">
+                  <td>{{ log.id }}</td>
+                  <td>{{ log.user.email }}</td>
+                  <td>{{ log.user.userFullName }}</td>
+                  <td>{{ log.createdDateTime | date: "dd-MM-yyyy HH:mm" }}</td>
+                  <td>{{ log.checkList.id }}</td>
+                  <td>{{ log.checkList.header }}</td>
+                  <td>
+                    <a
+                      target="_blank"
+                      [routerLink]="['/checklist/' + log.checkList.id]"
+                      style="color: #3b6ffb"
+                      >Go to checklist</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- MODAL BODY END -->
+  </section>
+
+  <footer id="modal-footer">
+    <!-- MODAL FOOTER -->
+  </footer>
+</div>

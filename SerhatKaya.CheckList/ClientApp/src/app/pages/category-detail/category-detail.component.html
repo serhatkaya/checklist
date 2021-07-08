@@ -1,0 +1,333 @@
+<div *ngIf="categoryItem != undefined">
+  <main class="o-main">
+    <div class="o-category-detail-section">
+      <div class="o-checklists-heading">
+        <h2 class="u-margin-bottom-0">
+          {{ categoryItem.category.categoryName }} ({{
+            categoryItem.checkLists.length
+          }})
+        </h2>
+        <a
+          class="c-link-light o-suggest-a-checklist"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Suggest a Checklist
+          <svg
+            class="c-icon o-suggest-a-checklist__icon"
+            aria-hidden="true"
+          ></svg>
+        </a>
+      </div>
+      <div class="row u-margin-top-xsmall">
+        <div class="col col--md-6 col--xl-5 u-text-style-large-body">
+          {{ categoryItem.category.description }}
+        </div>
+      </div>
+      <ul
+        class="
+          c-tag-list
+          o-page-taglist
+          u-margin-top u-margin-bottom-medium@md-up u-margin-bottom@sm-down
+        "
+      >
+        <li
+          *ngFor="let tag of categoryItem.category.tagItems"
+          class="c-tag-list__item"
+        >
+          <a
+            class="c-tag c-tag--theme-default c-tag--size-normal"
+            routerLink="/tags/{{ tag.tag.id }}"
+            >#{{ tag.tag.tagName }}</a
+          >
+        </li>
+      </ul>
+      <div class="row">
+        <div class="col col--md-6 u-margin-top-small u-display-flex">
+          <div
+            class="
+              c-card c-card--theme-clementine
+              c-checklist-card
+              u-flex-basis-100%
+            "
+            *ngFor="let checkList of categoryItem.checkLists"
+          >
+            <header class="c-card__header">
+              <div class="c-checklist-card__details">
+                <a
+                  aria-current="page"
+                  class="
+                    c-link-secondary c-link-category
+                    c-checklist-card__category
+                    is-active
+                  "
+                  href="index.html"
+                  >{{ checkList.category.categoryName }}</a
+                >
+                <span class="c-checklist-card__todo-count"><!-- --> </span>
+              </div>
+              <h4 class="c-card__title c-checklist-card__title">
+                <a
+                  class="c-link-light c-card__title-link"
+                  [routerLink]=""
+                  (click)="router.navigate(['/checklist/' + checkList.id])"
+                  ><img
+                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNiAyNiI+PGRlZnMvPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZmlsbD0iIzEwMTAxMyIgZD0iTS03NjAtMTU2MUg2ODB2NDI1NkgtNzYweiIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMiAtNzUpIj48cmVjdCB3aWR0aD0iNTYxIiBoZWlnaHQ9IjI3MCIgZmlsbD0iIzE4MUMyNyIgcng9IjQiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMiA3NSkiPjxyZWN0IHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiIgZmlsbD0iI0ZFMkQ1QiIgcng9IjIiLz48cGF0aCBmaWxsPSIjRTdFRkZGIiBkPSJNMTcuNzEzIDEwLjI3OWMuNTE3LS40ODUuODY0LS4wNCAxLjM2NC40Ni41LjUwMy45NjQuODcyLjQ0NyAxLjM1NmwtOC40MDMgOC4xYS44LjggMCAwMS0xLjExMi0uMDAybC0zLjUxNC0zLjQxMWMtLjUwOS0uNDk0LS4xNDUtLjg4OC4zNjQtMS4zODFzLjk3LS44OTkgMS40NzktLjQwNWwxLjcgMS42NTFhLjguOCAwIDAwMS4xMTUgMHptMC00LjU3Yy41MTctLjQ4NS44NjQtLjA0IDEuMzY0LjQ2MS41LjUwMi45NjQuODcuNDQ3IDEuMzU2bC04LjQwMyA4LjFhLjguOCAwIDAxLTEuMTEyLS4wMDNsLTMuNTE0LTMuNDExYy0uNTA5LS40OTQtLjE0NS0uODg4LjM2NC0xLjM4bC4wOS0uMDg3Yy40NzMtLjQ1MS45MS0uNzgzIDEuMzg5LS4zMTlsMS43IDEuNjUyYS44LjggMCAwMDEuMTE1IDB6Ii8+PC9nPjwvZz48L2c+PC9zdmc+"
+                    class="c-checklist-card__featured"
+                    alt="Featured checklist"
+                  />{{ checkList.header }}</a
+                >
+              </h4>
+            </header>
+            <p class="c-checklist-card__description">
+              {{ checkList.description }}
+            </p>
+            <footer class="c-card__footer">
+              <ul class="c-tag-list">
+                <li
+                  class="c-tag-list__item c-checklist-card__tag"
+                  *ngFor="let tag of checkList.category.tagItems"
+                >
+                  <a
+                    class="c-tag c-tag--theme-clementine c-tag--size-small"
+                    routerLink="/tags/{{ tag.tag.id }}"
+                    >#{{ tag.tag.tagName }}</a
+                  >
+                </li>
+              </ul>
+            </footer>
+          </div>
+          <div *ngIf="categoryItem.checkLists.length == 0">
+            There is no checklist for this category.
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="u-margin-ends-0 u-color-primary-900" />
+    <section class="o-checklist-categories-section">
+      <h2 class="u-margin-bottom-medium">Checklist Categories</h2>
+      <div class="row">
+        <div class="col col--md-4 col--lg-3 u-display-flex u-margin-top-small">
+          <div
+            class="c-card c-card--theme-blue c-category-card u-flex-basis-100%"
+          >
+            <header class="c-card__header">
+              <h4 class="c-card__title c-category-card__title">
+                <a
+                  class="c-link-light c-card__title-link"
+                  href="../general/index.html"
+                  >General</a
+                >
+              </h4>
+            </header>
+            <div class="c-category-card__checklist-count">
+              2
+              <!-- -->
+              Checklist
+              <!-- -->s
+            </div>
+            <p class="c-category-card__description">
+              There are some checklists which are hard to categorize. Let’s just
+              call them generals.
+            </p>
+            <footer class="c-card__footer">
+              <ul class="c-tag-list">
+                <li class="c-tag-list__item c-category-card__tag">
+                  <a
+                    class="c-tag c-tag--theme-blue c-tag--size-small"
+                    href="../../tag/social-media/index.html"
+                    >#
+                    <!-- -->social-media</a
+                  >
+                </li>
+                <li class="c-tag-list__item c-category-card__tag">
+                  <a
+                    class="c-tag c-tag--theme-blue c-tag--size-small"
+                    href="../../tag/launch/index.html"
+                    >#
+                    <!-- -->launch</a
+                  >
+                </li>
+                <li class="c-tag-list__item c-category-card__tag">
+                  <a
+                    class="c-tag c-tag--theme-blue c-tag--size-small"
+                    href="../../tag/password/index.html"
+                    >#
+                    <!-- -->password</a
+                  >
+                </li>
+              </ul>
+            </footer>
+          </div>
+        </div>
+        <div class="col col--md-4 col--lg-3 u-display-flex u-margin-top-small">
+          <div
+            class="
+              c-card c-card--theme-purple
+              c-category-card
+              u-flex-basis-100%
+            "
+          >
+            <header class="c-card__header">
+              <h4 class="c-card__title c-category-card__title">
+                <a
+                  class="c-link-light c-card__title-link"
+                  href="../human-resources/index.html"
+                  >Human Resources</a
+                >
+              </h4>
+            </header>
+            <div class="c-category-card__checklist-count">
+              2
+              <!-- -->
+              Checklist
+              <!-- -->s
+            </div>
+            <p class="c-category-card__description">
+              Cabin crew, slides armed and cross check! Here are the checklists
+              to make sure everyone in the crew is happy.
+            </p>
+            <footer class="c-card__footer">
+              <ul class="c-tag-list">
+                <li class="c-tag-list__item c-category-card__tag">
+                  <a
+                    class="c-tag c-tag--theme-purple c-tag--size-small"
+                    href="../../tag/recruitment/index.html"
+                    >#
+                    <!-- -->recruitment</a
+                  >
+                </li>
+                <li class="c-tag-list__item c-category-card__tag">
+                  <a
+                    class="c-tag c-tag--theme-purple c-tag--size-small"
+                    href="../../tag/job-posting/index.html"
+                    >#
+                    <!-- -->job-posting</a
+                  >
+                </li>
+                <li class="c-tag-list__item c-category-card__tag">
+                  <a
+                    class="c-tag c-tag--theme-purple c-tag--size-small"
+                    href="../../tag/interview/index.html"
+                    >#
+                    <!-- -->interview</a
+                  >
+                </li>
+                <li class="c-tag-list__item c-category-card__tag">
+                  <a
+                    class="c-tag c-tag--theme-purple c-tag--size-small"
+                    href="../../tag/offer/index.html"
+                    >#
+                    <!-- -->offer</a
+                  >
+                </li>
+              </ul>
+            </footer>
+          </div>
+        </div>
+        <div class="col col--md-4 col--lg-3 u-display-flex u-margin-top-small">
+          <div
+            class="
+              c-card c-card--theme-gossamer
+              c-category-card
+              u-flex-basis-100%
+            "
+          >
+            <header class="c-card__header">
+              <h4 class="c-card__title c-category-card__title">
+                <a
+                  class="c-link-light c-card__title-link"
+                  href="../marketing/index.html"
+                  >Marketing</a
+                >
+              </h4>
+            </header>
+            <div class="c-category-card__checklist-count">
+              2
+              <!-- -->
+              Checklist
+              <!-- -->s
+            </div>
+            <p class="c-category-card__description">
+              Our marketing checklist is to help supporting our good work by its
+              communication, and has everything marketing team uses for our
+              marketing efforts.
+            </p>
+            <footer class="c-card__footer">
+              <ul class="c-tag-list">
+                <li class="c-tag-list__item c-category-card__tag">
+                  <a
+                    class="c-tag c-tag--theme-gossamer c-tag--size-small"
+                    href="../../tag/case-study/index.html"
+                    >#
+                    <!-- -->case-study</a
+                  >
+                </li>
+              </ul>
+            </footer>
+          </div>
+        </div>
+        <div class="col col--md-4 col--lg-3 u-display-flex u-margin-top-small">
+          <div
+            class="
+              c-card c-card--theme-fuzzy-wuzzy-brown
+              c-category-card
+              u-flex-basis-100%
+            "
+          >
+            <header class="c-card__header">
+              <h4 class="c-card__title c-category-card__title">
+                <a
+                  class="c-link-light c-card__title-link"
+                  href="../devops/index.html"
+                  >DevOps</a
+                >
+              </h4>
+            </header>
+            <div class="c-category-card__checklist-count">
+              1
+              <!-- -->
+              Checklist
+            </div>
+            <p class="c-category-card__description">
+              We love to automate things and have also checklists for that.
+            </p>
+            <footer class="c-card__footer">
+              <ul class="c-tag-list">
+                <li class="c-tag-list__item c-category-card__tag">
+                  <a
+                    class="
+                      c-tag c-tag--theme-fuzzy-wuzzy-brown c-tag--size-small
+                    "
+                    href="../../tag/github/index.html"
+                    >#
+                    <!-- -->github</a
+                  >
+                </li>
+                <li class="c-tag-list__item c-category-card__tag">
+                  <a
+                    class="
+                      c-tag c-tag--theme-fuzzy-wuzzy-brown c-tag--size-small
+                    "
+                    href="../../tag/branch/index.html"
+                    >#
+                    <!-- -->branch</a
+                  >
+                </li>
+                <li class="c-tag-list__item c-category-card__tag">
+                  <a
+                    class="
+                      c-tag c-tag--theme-fuzzy-wuzzy-brown c-tag--size-small
+                    "
+                    href="../../tag/kickoff/index.html"
+                    >#
+                    <!-- -->kickoff</a
+                  >
+                </li>
+              </ul>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

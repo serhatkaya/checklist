@@ -1,0 +1,74 @@
+<div>
+  <main class="container d-flex justify-content-center">
+    <div
+      class="
+        col col--md-6
+        u-margin-top-small u-display-flex
+        justify-content-center
+      "
+    >
+      <div class="c-card c-card--theme-blue c-checklist-card u-flex-basis-100%">
+        <header class="c-card__header">
+          <div class="c-checklist-card__details">
+            Login <span class="c-checklist-card__todo-count"></span>
+          </div>
+        </header>
+        <div class="c-checklist-card__description">
+          <form>
+            <div class="form-group row">
+              <label for="text" class="col-4 col-form-label">Username</label>
+              <div class="col-8">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fa fa-user-alt"></i>
+                    </div>
+                  </div>
+                  <input
+                    id="text"
+                    [(ngModel)]="loginUser.email"
+                    name="text"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="text1" class="col-4 col-form-label">Password</label>
+              <div class="col-8">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fa fa-unlock"></i>
+                    </div>
+                  </div>
+                  <input
+                    id="text1"
+                    [(ngModel)]="loginUser.password"
+                    name="text1"
+                    type="password"
+                    (keyup.enter)="login()"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="offset-4 col-8 d-flex justify-content-end">
+                <button
+                  class="c-button c-button--primary u-width-100%@sm-down"
+                  type="button"
+                  (click)="login()"
+                >
+                  Login
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <footer class="c-card__footer">root@kayaserhat.com</footer>
+      </div>
+    </div>
+  </main>
+</div>

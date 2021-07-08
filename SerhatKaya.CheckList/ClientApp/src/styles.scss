@@ -1,0 +1,45 @@
+/* You can add global styles to this file, and also import other style files */
+@import "assets/fontawesome/css/all.min.css";
+@import "assets/css/styles.css";
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #e01a76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-dialog-container {
+  padding: 0;
+  background-color: #343a40;
+}
+
+.mat-pseudo-checkbox {
+  color: white;
+}
+
+.mat-list-text {
+  color: white;
+}
+
+.mat-pseudo-checkbox.mat-pseudo-checkbox-checked {
+  background: #e66400 !important;
+}

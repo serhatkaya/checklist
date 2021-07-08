@@ -1,0 +1,79 @@
+<div *ngIf="cLItem != undefined">
+  <main class="o-main">
+    <div class="o-page-container">
+      <ul
+        class="
+          c-tag-list
+          o-page-taglist
+          u-margin-bottom-xlarge@lg-up u-margin-bottom@md-down
+        "
+      >
+        <li *ngFor="let tag of tags" class="c-tag-list__item">
+          <a
+            class="c-tag c-tag--theme-default c-tag--size-normal"
+            routerLink="/tags/{{ tag.id }}"
+            >#{{ tag.tagName }}</a
+          >
+        </li>
+      </ul>
+      <div class="o-checklists-heading">
+        <h2 class="u-margin-bottom-0">Checklists</h2>
+      </div>
+      <div class="u-text-style-large-body u-margin-top-xsmall">
+        There are 0 of them and counting!
+      </div>
+      <div *ngIf="cLItem" class="row u-margin-top-small">
+        <div
+          class="col col--md-6 u-margin-top-small u-display-flex"
+          *ngFor="let item of cLItem"
+        >
+          <div
+            class="c-card {{ item.theme }} c-checklist-card u-flex-basis-100%"
+          >
+            <header class="c-card__header">
+              <div class="c-checklist-card__details">
+                <a
+                  class="
+                    c-link-secondary c-link-category
+                    c-checklist-card__category
+                  "
+                  href="/category/project-management"
+                  >{{ item.category.categoryName }}</a
+                ><span class="c-checklist-card__todo-count"
+                  >{{ item.checkListItems.length }} To-Do's</span
+                >
+              </div>
+              <h4 class="c-card__title c-checklist-card__title">
+                <a
+                  class="c-link-light c-card__title-link"
+                  (click)="router.navigate(['/checklist/' + item.id])"
+                  ><img
+                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNiAyNiI+PGRlZnMvPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZmlsbD0iIzEwMTAxMyIgZD0iTS03NjAtMTU2MUg2ODB2NDI1NkgtNzYweiIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMiAtNzUpIj48cmVjdCB3aWR0aD0iNTYxIiBoZWlnaHQ9IjI3MCIgZmlsbD0iIzE4MUMyNyIgcng9IjQiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMiA3NSkiPjxyZWN0IHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiIgZmlsbD0iI0ZFMkQ1QiIgcng9IjIiLz48cGF0aCBmaWxsPSIjRTdFRkZGIiBkPSJNMTcuNzEzIDEwLjI3OWMuNTE3LS40ODUuODY0LS4wNCAxLjM2NC40Ni41LjUwMy45NjQuODcyLjQ0NyAxLjM1NmwtOC40MDMgOC4xYS44LjggMCAwMS0xLjExMi0uMDAybC0zLjUxNC0zLjQxMWMtLjUwOS0uNDk0LS4xNDUtLjg4OC4zNjQtMS4zODFzLjk3LS44OTkgMS40NzktLjQwNWwxLjcgMS42NTFhLjguOCAwIDAwMS4xMTUgMHptMC00LjU3Yy41MTctLjQ4NS44NjQtLjA0IDEuMzY0LjQ2MS41LjUwMi45NjQuODcuNDQ3IDEuMzU2bC04LjQwMyA4LjFhLjguOCAwIDAxLTEuMTEyLS4wMDNsLTMuNTE0LTMuNDExYy0uNTA5LS40OTQtLjE0NS0uODg4LjM2NC0xLjM4bC4wOS0uMDg3Yy40NzMtLjQ1MS45MS0uNzgzIDEuMzg5LS4zMTlsMS43IDEuNjUyYS44LjggMCAwMDEuMTE1IDB6Ii8+PC9nPjwvZz48L2c+PC9zdmc+"
+                    class="c-checklist-card__featured"
+                    alt="Featured checklist"
+                  />{{ item.header }}</a
+                >
+              </h4>
+            </header>
+            <p class="c-checklist-card__description">{{ item.description }}</p>
+            <footer class="c-card__footer">
+              <ul class="c-tag-list">
+                <li
+                  class="c-tag-list__item c-checklist-card__tag"
+                  *ngFor="let tagItem of item.category.tagItems"
+                >
+                  <a
+                    class="c-tag c-tag--theme-clementine c-tag--size-small"
+                    routerLink="/tags/{{ tagItem.tag.id }}"
+                    >#{{ tagItem.tag.tagName }}</a
+                  >
+                </li>
+              </ul>
+            </footer>
+          </div>
+        </div>
+      </div>
+      <nav class="c-pagination" aria-label="Checklists Navigation"></nav>
+    </div>
+  </main>
+</div>

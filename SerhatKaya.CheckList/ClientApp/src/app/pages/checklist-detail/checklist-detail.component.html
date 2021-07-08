@@ -1,0 +1,87 @@
+<main class="o-main">
+  <div *ngIf="cLItem != undefined" class="row o-checklist-detail-section">
+    <div class="col col--lg-8">
+      <a
+        class="c-link-secondary c-link-category c-link-category--size-medium"
+        href="../../category/general/index.html"
+        >General</a
+      >
+      <h1 class="u-margin-ends-small">{{ cLItem.header }}</h1>
+      <ul class="c-tag-list">
+        <li
+          *ngFor="let tag of cLItem.category.tagItems"
+          class="c-tag-list__item"
+        >
+          <a
+            class="c-tag c-tag--theme-blue c-tag--size-small"
+            routerLink="/tags/{{ tag.tag.id }}"
+            >#{{ tag.tag.tagName }}</a
+          >
+        </li>
+      </ul>
+      <p class="u-margin-top u-text-style-large-body u-color-secondary">
+        {{ cLItem.description }}
+      </p>
+      <div
+        class="
+          u-padding-ends-xlarge@xl-up u-padding-ends-large@lg-down
+          o-checklist-content
+        "
+      >
+        <div>
+          <div class="c-checklist">
+            <div
+              *ngFor="let item of cLItem.checkListItems"
+              class="c-checklist-item"
+              role="checkbox"
+              [attr.aria-checked]="checkIfChecked(item.id)"
+              (click)="checkItem(item.id)"
+            >
+              <div class="c-checklist-item__checkbox">
+                <i
+                  class="fas fa-check"
+                  style="color: white; display: none; font-size: 12px"
+                ></i>
+              </div>
+              <div class="c-checklist-item__content">
+                <div
+                  class="c-checklist-item__title"
+                  id=" Make sure the project covers all the related checklists  -title"
+                >
+                  {{ item.itemHeader }}
+                </div>
+                <p
+                  class="c-checklist-item__description"
+                  id=" Make sure the project covers all the related checklists  -description"
+                >
+                  {{ item.itemText }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col u-width-auto@md-up">
+          <button
+            class="c-button c-button--primary u-width-100%@sm-down"
+            type="button"
+            (click)="checkedItems = []"
+          >
+            Reset
+          </button>
+        </div>
+        <div class="col u-width-auto@md-up u-margin-top-small@sm-down">
+          <button
+            class="c-button c-button--secondary u-width-100%@sm-down"
+            [disabled]="checkedItems.length != cLItem.checkListItems.length"
+            (click)="sendLog(cLItem.id)"
+            rel="noopener noreferrer"
+          >
+            I've checked, everyting is okay.
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

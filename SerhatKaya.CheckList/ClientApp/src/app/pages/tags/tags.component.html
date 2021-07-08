@@ -1,0 +1,51 @@
+<div *ngIf="tagItem != undefined">
+  <main class="o-main">
+    <section class="o-categories-section">
+      <h2>#{{ tagItem.tagName }}</h2>
+      <div class="c-category-card__checklist-count">
+        {{ tagItem.tagItems.length }} categories
+      </div>
+
+      <div class="row">
+        <div
+          *ngFor="let item of tagItem.tagItems"
+          class="col col--md-4 col--lg-3 u-display-flex u-margin-top-small"
+        >
+          <div
+            class="
+              c-card c-card--theme-clementine
+              c-category-card
+              u-flex-basis-100%
+            "
+          >
+            <header class="c-card__header">
+              <h4 class="c-card__title c-category-card__title">
+                <a
+                  class="c-link-light c-card__title-link"
+                  [routerLink]=""
+                  (click)="router.navigate(['/category/' + item.category.id])"
+                  >{{ item.category.categoryName }}</a
+                >
+              </h4>
+            </header>
+            <p class="c-category-card__description">
+              {{ item.category.description }}
+            </p>
+            <footer class="c-card__footer">
+              <ul class="c-tag-list">
+                <li class="c-tag-list__item c-category-card__tag">
+                  <a
+                    class="c-tag c-tag--theme-clementine c-tag--size-small"
+                    routerLink="/tags/{{ tagItem.id }}"
+                  >
+                    #{{ tagItem.tagName }}
+                  </a>
+                </li>
+              </ul>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
